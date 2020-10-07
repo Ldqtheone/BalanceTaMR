@@ -29,4 +29,11 @@ class GitlabApiService
 
         return $auth;
     }
+
+    public function getOwnerProject(){
+        return $this->tokenAuth()->projects()->all([
+                "owned" => true,
+                "simple"=> true]
+        );
+    }
 }

@@ -29,6 +29,11 @@ class TeamProject
      */
     private $team;
 
+    /**
+     * @ORM\Column(type="string", length=70)
+     */
+    private $projectName;
+
     public function __construct()
     {
         $this->team = new ArrayCollection();
@@ -73,6 +78,18 @@ class TeamProject
         if ($this->team->contains($team)) {
             $this->team->removeElement($team);
         }
+
+        return $this;
+    }
+
+    public function getProjectName(): ?string
+    {
+        return $this->projectName;
+    }
+
+    public function setProjectName(string $projectName): self
+    {
+        $this->projectName = $projectName;
 
         return $this;
     }

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
-use App\Service\GitlabApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,17 +18,11 @@ class TeamController extends AbstractController
     /**
      * @Route("/", name="team_index", methods={"GET"})
      * @param TeamRepository $teamRepository
-     * @param GitlabApiService $gitlabApiService
      * @return Response
      */
-    public function index(TeamRepository $teamRepository, GitlabApiService $gitlabApiService): Response
+    public function index(TeamRepository $teamRepository): Response
     {
-        $project = $gitlabApiService->tokenAuth()->projects()->all([
-            "owned" => true]
-        );
-
-        var_dump($project);
-
+        //var_dump($project);
         return $this->render('team/index.html.twig', [
             'teams' => $teamRepository->findAll(),
         ]);

@@ -17,7 +17,7 @@ class TeamType extends AbstractType
             ->add('name')
             ->add('picture_url')
             ->add('teamProjects', EntityType::class,['class' => TeamProject::class,
-                'choice_label' => "project_id", 'multiple' => true])
+                'choice_label' => "projectName", 'multiple' => true])
         ;
     }
 

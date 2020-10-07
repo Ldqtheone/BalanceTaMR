@@ -3,92 +3,88 @@
 namespace App\Controller;
 
 use App\Entity\TeamProject;
-use App\Form\TeamProjectType;
 use App\Repository\TeamProjectRepository;
+use App\Service\GitlabApiService;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/teamproject")
+ * @Route("/updateProject")
  */
 class TeamProjectController extends AbstractController
 {
     /**
-     * @Route("/", name="team_project_index", methods={"GET"})
+     * @var GitlabApiService
      */
-    public function index(TeamProjectRepository $teamProjectRepository): Response
+    private GitlabApiService $gitlabApiService;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * @var TeamProjectRepository
+     */
+    private TeamProjectRepository $teamProjectRepository;
+
+    /**
+     * TeamProjectController constructor.
+     * @param GitlabApiService $gitlabApiService
+     * @param EntityManagerInterface $em
+     * @param TeamProjectRepository $teamProjectRepository
+     */
+    function __construct(GitlabApiService $gitlabApiService,
+                         EntityManagerInterface $em,
+                         TeamProjectRepository $teamProjectRepository){
+        $this->gitlabApiService = $gitlabApiService;
+        $this->em = $em;
+        $this->teamProjectRepository = $teamProjectRepository;
+    }
+
+    /**
+     * @Route("/", name="updateProject_index", methods={"GET"})
+     * @return Response
+     */
+    public function index(): Response
     {
+        $this->checkProjects();
+
         return $this->render('team_project/index.html.twig', [
-            'team_projects' => $teamProjectRepository->findAll(),
+            'team_projects' => $this->teamProjectRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/new", name="team_project_new", methods={"GET","POST"})
+     * Check existing projects and push it if not exist
      */
-    public function new(Request $request): Response
-    {
-        $teamProject = new TeamProject();
-        $form = $this->createForm(TeamProjectType::class, $teamProject);
-        $form->handleRequest($request);
+    private function checkProjects(){
+        $allProjects = $this->gitlabApiService->getOwnerProject();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($teamProject);
-            $entityManager->flush();
+        foreach ($allProjects as $project){
 
-            return $this->redirectToRoute('team_project_index');
+            $id = (int)$project['id'];
+            $name = $project['name'];
+
+            $projectList = new TeamProject();
+            $projectList->setProjectId($id);
+            $projectList->setProjectName($name);
+
+            $searchedId = $this->teamProjectRepository->findOneBy(['project_id' => $id]);
+
+            if($searchedId){
+                if($searchedId->getProjectId() != $id){
+                    $this->em->persist($projectList);
+                    $this->em->flush();
+                }
+            }
+            else{
+                $this->em->persist($projectList);
+                $this->em->flush();
+            }
         }
-
-        return $this->render('team_project/new.html.twig', [
-            'team_project' => $teamProject,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="team_project_show", methods={"GET"})
-     */
-    public function show(TeamProject $teamProject): Response
-    {
-        return $this->render('team_project/show.html.twig', [
-            'team_project' => $teamProject,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="team_project_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, TeamProject $teamProject): Response
-    {
-        $form = $this->createForm(TeamProjectType::class, $teamProject);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('team_project_index');
-        }
-
-        return $this->render('team_project/edit.html.twig', [
-            'team_project' => $teamProject,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="team_project_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, TeamProject $teamProject): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$teamProject->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($teamProject);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('team_project_index');
     }
 }
