@@ -1,38 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Team index{% endblock %}
+{% block title %}#BalanceTaMR - Équipes{% endblock %}
+
+{% block navbar %}
+    <a href="{{ path('updateProject_index') }}" class="btn btn-primary" role="button">
+        <i class="fas fa-sync" aria-hidden="true"></i> Rafraîchir les projets
+    </a>
+{% endblock %}
 
 {% block body %}
-    <h1>Team index</h1>
-    <a href="{{ path('updateProject_index') }}">Refresh</a>
+    <h1 class="text-center">Choisissez une équipe</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Picture_url</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container-sm d-flex justify-content-center align-items-center">
         {% for team in teams %}
-            <tr>
-                <td>{{ team.id }}</td>
-                <td>{{ team.name }}</td>
-                <td><img src="{{ team.pictureUrl }}"/></td>
-                <td>
-                    <a href="{{ path('team_show', {'id': team.id}) }}">show</a>
-                    <a href="{{ path('team_edit', {'id': team.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
+            <div class="w-300 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+                <div class="card">
+                    <div class="text-right"> <!-- text-right = text-align: right -->
+                        <a href="{{ path('team_edit', {'id': team.id}) }}" class="text-muted">
+                            <i class="fas fa-cog fa-2x" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="text-center">
+                        <img src="{{ team.pictureUrl }}" class="img-fluid rounded-circle"/>
+                        <h2 class="card-title">{{ team.name }}</h2>
+                        <a href="{{ path('team_show', {'id': team.id}) }}" class="btn btn-lg" type="button">Choisir</a>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('team_new') }}">Create new</a>
+        <div class="w-300 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+            <div class="card">
+                <div class="text-center mb-20">
+                    <img src="/img/blank_team.svg" class="img-fluid rounded-circle"/>
+                </div>
+                <div class="text-center">
+                    <a href="{{ path('team_new') }}" class="btn btn-primary btn-lg" type="button">Créer une équipe</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}
