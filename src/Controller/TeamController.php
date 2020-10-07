@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Entity\TeamProject;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use App\Service\GitlabApiService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,13 +19,26 @@ use Symfony\Component\Routing\Annotation\Route;
 class TeamController extends AbstractController
 {
     /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $em;
+
+    /**
+     * TeamController constructor.
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    /**
      * @Route("/", name="team_index", methods={"GET"})
      * @param TeamRepository $teamRepository
      * @return Response
      */
     public function index(TeamRepository $teamRepository): Response
     {
-        //var_dump($project);
         return $this->render('team/index.html.twig', [
             'teams' => $teamRepository->findAll(),
         ]);
@@ -38,9 +54,8 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($team);
-            $entityManager->flush();
+            $this->em->persist($team);
+            $this->em->flush();
 
             return $this->redirectToRoute('team_index');
         }
@@ -53,9 +68,37 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/{id}", name="team_show", methods={"GET"})
+     * @param Team $team
+     * @param GitlabApiService $gitlabApiService
+     * @return Response
      */
-    public function show(Team $team): Response
+    public function show(Team $team, GitlabApiService $gitlabApiService): Response
     {
+        /*$showMerge = $gitlabApiService->getMergeByProject();
+
+        foreach ($showMerge as $merge){
+
+            $id = (int)$project['id'];
+            $name = $project['name'];
+
+            $projectList = new TeamProject();
+            $projectList->setProjectId($id);
+            $projectList->setProjectName($name);
+
+            $searchedId = $this->teamProjectRepository->findOneBy(['project_id' => $id]);
+
+            if($searchedId){
+                if($searchedId->getProjectId() != $id){
+                    $this->em->persist($projectList);
+                    $this->em->flush();
+                }
+            }
+            else{
+                $this->em->persist($projectList);
+                $this->em->flush();
+            }
+        }*/
+
         return $this->render('team/show.html.twig', [
             'team' => $team,
         ]);

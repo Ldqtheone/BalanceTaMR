@@ -6,7 +6,6 @@ use App\Entity\TeamProject;
 use App\Repository\TeamProjectRepository;
 use App\Service\GitlabApiService;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,6 +39,7 @@ class TeamProjectController extends AbstractController
     function __construct(GitlabApiService $gitlabApiService,
                          EntityManagerInterface $em,
                          TeamProjectRepository $teamProjectRepository){
+
         $this->gitlabApiService = $gitlabApiService;
         $this->em = $em;
         $this->teamProjectRepository = $teamProjectRepository;
@@ -87,4 +87,5 @@ class TeamProjectController extends AbstractController
             }
         }
     }
+
 }

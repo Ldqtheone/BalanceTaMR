@@ -25,18 +25,19 @@ class TeamProject
     private $project_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Team::class, inversedBy="teamProjects")
-     */
-    private $team;
-
-    /**
      * @ORM\Column(type="string", length=70)
      */
     private $projectName;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Team::class, mappedBy="projects")
+     */
+    private $teams;
+
     public function __construct()
     {
         $this->team = new ArrayCollection();
+        $this->teams = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,32 +57,6 @@ class TeamProject
         return $this;
     }
 
-    /**
-     * @return Collection|Team[]
-     */
-    public function getTeam(): Collection
-    {
-        return $this->team;
-    }
-
-    public function addTeam(Team $team): self
-    {
-        if (!$this->team->contains($team)) {
-            $this->team[] = $team;
-        }
-
-        return $this;
-    }
-
-    public function removeTeam(Team $team): self
-    {
-        if ($this->team->contains($team)) {
-            $this->team->removeElement($team);
-        }
-
-        return $this;
-    }
-
     public function getProjectName(): ?string
     {
         return $this->projectName;
@@ -90,6 +65,34 @@ class TeamProject
     public function setProjectName(string $projectName): self
     {
         $this->projectName = $projectName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Team[]
+     */
+    public function getTeams(): Collection
+    {
+        return $this->teams;
+    }
+
+    public function addTeam(Team $team): self
+    {
+        if (!$this->teams->contains($team)) {
+            $this->teams[] = $team;
+            $team->addProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeam(Team $team): self
+    {
+        if ($this->teams->contains($team)) {
+            $this->teams->removeElement($team);
+            $team->removeProject($this);
+        }
 
         return $this;
     }

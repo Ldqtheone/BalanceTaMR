@@ -36,4 +36,10 @@ class GitlabApiService
                 "simple"=> true]
         );
     }
+
+    public function getMergeByProject(int $projectId){
+        return $this->tokenAuth()->mergeRequests()->all([
+                "project_id" => $projectId]
+        );
+    }
 }

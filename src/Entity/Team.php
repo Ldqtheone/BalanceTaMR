@@ -30,13 +30,14 @@ class Team
     private $picture_url;
 
     /**
-     * @ORM\ManyToMany(targetEntity=TeamProject::class, mappedBy="team")
+     * @ORM\ManyToMany(targetEntity=TeamProject::class, inversedBy="teams")
      */
-    private $teamProjects;
+    private $projects;
 
     public function __construct()
     {
         $this->teamProjects = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,26 +72,24 @@ class Team
     /**
      * @return Collection|TeamProject[]
      */
-    public function getTeamProjects(): Collection
+    public function getProjects(): Collection
     {
-        return $this->teamProjects;
+        return $this->projects;
     }
 
-    public function addTeamProject(TeamProject $teamProject): self
+    public function addProject(TeamProject $project): self
     {
-        if (!$this->teamProjects->contains($teamProject)) {
-            $this->teamProjects[] = $teamProject;
-            $teamProject->addTeam($this);
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
         }
 
         return $this;
     }
 
-    public function removeTeamProject(TeamProject $teamProject): self
+    public function removeProject(TeamProject $project): self
     {
-        if ($this->teamProjects->contains($teamProject)) {
-            $this->teamProjects->removeElement($teamProject);
-            $teamProject->removeTeam($this);
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
         }
 
         return $this;
