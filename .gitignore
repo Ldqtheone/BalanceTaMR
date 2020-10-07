@@ -18,4 +18,3 @@
 *.xml
 *.iml
 .idea/commandlinetools/schemas/frameworkDescriptionVersion1.1.4.xsd
-.env
