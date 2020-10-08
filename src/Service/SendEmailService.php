@@ -10,17 +10,17 @@ class SendEmailService
 {
     public static function sendEmail($mrList): void
     {
-        $content = "<h1>#BalanceTaMR</h1><br><h2>Bonjour !\nVoici les merge requests restantes à ce jour :</h2>";
+        $content = "<h1>#BalanceTaMR</h1><br><p>Bonjour ! 👋\nVoici les merge requests restantes à ce jour :</p>";
         $content .= "<table>
                       <thead>
                         <tr>
-                          <th>Nom</th>
-                          <th>Créateur</th>
-                          <th>Date</th>
-                          <th>Upvotes</th>
-                          <th>Downvotes</th>
-                          <th>Commentaires</th>
-                          <th>Lien GitLab</th>
+                          <th>Nom 📛</th>
+                          <th>Créateur 🧍</th>
+                          <th>Date 🗓️</th>
+                          <th>Upvotes 👍</th>
+                          <th>Downvotes 👎</th>
+                          <th>Commentaires 🗨️</th>
+                          <th>Lien GitLab 🦊</th>
                         </tr>
                        </thead>
                        <tbody>";
