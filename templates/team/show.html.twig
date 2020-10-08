@@ -13,9 +13,9 @@
     <div class="container-sm">
         <h1>Dashboard</h1>
         {% for project in projects %}
-            {% for merge in project %}
-                <span>{{ merge.title }}</span>
-                <a href="{{ path('merge_request', merge) }}" class="btn btn-link" role="button">Voir</a>
+            {% for mr in project %}
+                <span>{{ mr.title }}</span>
+                <a href="{{ path('merge_request', {'slug' : mr|merge({'element': 'value'})}) }}" class="btn btn-link" role="button">Voir</a>
             {% endfor %}
         {% endfor %}
     </div>

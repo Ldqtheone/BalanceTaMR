@@ -16,11 +16,17 @@ class MergeRequestController extends AbstractController
      */
     public function index(Request $request)
     {
-        $title = $request->query->get('title');
+        $infos = $request->query->all();
+
+        $mrInfo = array();
+
+        foreach ($infos['slug'] as $info => $val){
+            $mrInfo[$info] = $val;
+        }
 
         return $this->render('merge_request/index.html.twig', [
             'controller_name' => 'MergeRequestController',
-            'title' => $title
+            'infos' => $mrInfo
         ]);
     }
 }
