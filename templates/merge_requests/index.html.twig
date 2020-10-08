@@ -1,38 +1,46 @@
-{% extends 'base.html.twig' %}
+<!doctype html>
 
-{% block title %}#BalanceTaMR - Projets{% endblock %}
+<html lang="en">
+<head>
+    <style>
 
-{% block body %}
-    <div class="container-sm">
+        body {
+            font-family: "Comic Sans MS";
+        }
+    </style>
 
-        <h1>Liste des projets</h1>
+</head>
 
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>Project Id</th>
-                <th>Project Name</th>
-                <th>Lien Gitlab</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for team_project in team_projects %}
+<body>
+<h1>#BalanceTaMR</h1>
+Bonjo
 
-                <tr>
-                {% for merge in team_project %}
-                    <td>{{ merge.project_id }}</td>
-                    <td class="font-weight-bold">{{ merge.title }}</td>
-                    <td><a href="{{ merge.web_url }}" class="text-muted">Voir sur GitLab <i class="fab fa-gitlab" aria-hidden="true"></i></a>
-                    </td>
-                {% endfor %}
-                </tr>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Project Id</th>
+        <th>Project Name</th>
+        <th>Lien Gitlab</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team_project in team_projects %}
 
-            {% else %}
-                <tr>
-                    <td colspan="3">no records found</td>
-                </tr>
+        <tr>
+            {% for merge in team_project %}
+                <td>{{ merge.project_id }}</td>
+                <td>{{ merge.title }}</td>
             {% endfor %}
-            </tbody>
-        </table>
-    </div>
-{% endblock %}
+        </tr>
+
+    {% else %}
+        <tr>
+            <td colspan="3">Wow ! Pas de MR restantes !</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>
+
