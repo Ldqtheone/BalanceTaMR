@@ -10,16 +10,31 @@ use Psr\Log\LoggerInterface;
 class MergeRequestService
 {
 
-    private $logger;
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
 
-    private $gitlabApiService;
+    /**
+     * @var GitlabApiService
+     */
+    private GitlabApiService $gitlabApiService;
 
+    /**
+     * MergeRequestService constructor.
+     * @param LoggerInterface $logger
+     * @param GitlabApiService $gitlabApiService
+     */
     public function __construct(LoggerInterface $logger,
                                 GitlabApiService $gitlabApiService){
         $this->logger = $logger;
         $this->gitlabApiService = $gitlabApiService;
     }
 
+    /**
+     * @param Team $team
+     * @return array
+     */
     public function getAllMr(Team $team)
     {
         $projectIds = array();
@@ -35,6 +50,9 @@ class MergeRequestService
         }
 
         return $showMerge;
+    }
+
+    public function getMrById(){
     }
 
 }
