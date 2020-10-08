@@ -10,18 +10,21 @@
 {% endblock %}
 
 {% block body %}
-
     <div class="container-sm">
         <h1>Paramètres de l'équipe</h1>
-
         <div class="form-group">
-            {{ include('team/_form.html.twig', {'button_label': 'Update'}) }}
+            {{ include('team/_form.html.twig') }}
         </div>
-        <a class="btn" role="button" href="{{ path('team_index') }}">
-            <i class="fas fa-arrow-left" aria-hidden="true"></i> Retourner à la liste des profils
-        </a>
 
-        {{ include('team/_delete_form.html.twig') }}
+        <div class="row justify-content-around">
+            <a class="btn" role="button" href="{{ path('team_index') }}">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Retourner à la liste des profils
+            </a>
+            {{ include('team/_delete_form.html.twig') }}
+        </div>
+
 
     </div>
 {% endblock %}
+
+

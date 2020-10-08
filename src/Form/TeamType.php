@@ -6,6 +6,7 @@ use App\Entity\Team;
 use App\Entity\TeamProject;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,17 +15,23 @@ class TeamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('picture_url')
+            ->add('name', TextType::class, [
+                'attr' => ['class' => 'form-control form-control-lg'],
+                'label' => "Nom de l'équipe"
+            ])
+            ->add('picture_url', TextType::class, [
+                'attr' => ['class' => 'form-control form-control-lg'],
+                'label' => "URL de la photo de profil"
+            ])
             ->add('projects', EntityType::class,
                 [
-                    'class' => TeamProject::class,
                     'choice_label' => "project_name",
-                    "multiple" => true,
-                    "expanded" => true
+                    'class' => TeamProject::class,
+                    "expanded" => true,
+                    'label' => "Projets",
+                    "multiple" => true
                 ]
-            )
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
