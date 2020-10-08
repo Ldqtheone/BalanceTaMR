@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}#BalanceTaMR - Projets{% endblock %}
+
+{% block body %}
+    <div class="container-sm">
+
+        <h1>Liste des projets</h1>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Project Id</th>
+                <th>Project Name</th>
+                <th>Lien Gitlab</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for team_project in team_projects %}
+
+                <tr>
+                {% for merge in team_project %}
+                    <td>{{ merge.project_id }}</td>
+                    <td class="font-weight-bold">{{ merge.title }}</td>
+                    <td><a href="{{ merge.web_url }}" class="text-muted">Voir sur GitLab <i class="fab fa-gitlab" aria-hidden="true"></i></a>
+                    </td>
+                {% endfor %}
+                </tr>
+
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
