@@ -8,19 +8,17 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Project_id</th>
-                <th>actions</th>
+                <th>Project Id</th>
+                <th>Project Name</th>
+                <th>Lien Gitlab</th>
             </tr>
         </thead>
         <tbody>
         {% for team_project in team_projects %}
             <tr>
-                <td>{{ team_project.id }}</td>
                 <td>{{ team_project.projectId }}</td>
-                <td>
-                    {#<a href="{{ path('team_project_show', {'id': team_project.id}) }}">show</a>
-                    <a href="{{ path('team_project_edit', {'id': team_project.id}) }}">edit</a>#}
+                <td>{{ team_project.projectName }}</td>
+                <td><a href="{{ team_project.projectUrl }}">Voir</a>
                 </td>
             </tr>
         {% else %}
@@ -31,5 +29,4 @@
         </tbody>
     </table>
 
-    {#<a href="{{ path('team_project_new') }}">Create new</a>#}
 {% endblock %}

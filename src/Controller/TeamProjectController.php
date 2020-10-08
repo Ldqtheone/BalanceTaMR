@@ -68,10 +68,12 @@ class TeamProjectController extends AbstractController
 
             $id = (int)$project['id'];
             $name = $project['name'];
+            $url = $project['web_url'];
 
             $projectList = new TeamProject();
             $projectList->setProjectId($id);
             $projectList->setProjectName($name);
+            $projectList->setProjectUrl($url);
 
             $searchedId = $this->teamProjectRepository->findOneBy(['project_id' => $id]);
 

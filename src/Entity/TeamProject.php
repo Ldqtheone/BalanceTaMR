@@ -34,6 +34,11 @@ class TeamProject
      */
     private $teams;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $project_url;
+
     public function __construct()
     {
         $this->team = new ArrayCollection();
@@ -93,6 +98,18 @@ class TeamProject
             $this->teams->removeElement($team);
             $team->removeProject($this);
         }
+
+        return $this;
+    }
+
+    public function getProjectUrl(): ?string
+    {
+        return $this->project_url;
+    }
+
+    public function setProjectUrl(string $project_url): self
+    {
+        $this->project_url = $project_url;
 
         return $this;
     }
