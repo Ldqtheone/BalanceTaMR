@@ -1,3 +1,5 @@
+{#
+
 {% extends 'base.html.twig' %}
 
 {% block title %}New Team{% endblock %}
@@ -9,3 +11,28 @@
 
     <a href="{{ path('team_index') }}">back to list</a>
 {% endblock %}
+
+#}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}#BalanceTaMR - Nouvelle équipe{% endblock %}
+
+{% block body %}
+    <div class="container-sm">
+        <h1>Créer une équipe</h1>
+        <div class="form-group">
+            {{ include('team/_form.html.twig') }}
+        </div>
+
+        <div class="row justify-content-around">
+            <a class="btn" role="button" href="{{ path('team_index') }}">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i> Retourner à la liste des profils
+            </a>
+        </div>
+
+
+    </div>
+{% endblock %}
+
+

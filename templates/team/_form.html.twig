@@ -1,4 +1,27 @@
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_start(form) }}
+<div class="form-row row-eq-spacing-sm">
+    <div class="col">
+        {{ form_row(form.name) }}
+    </div>
+    <div class="col">
+        {{ form_row(form.picture_url) }}
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="col">
+        {{ form_label(form.projects) }}
+        {{ form_errors(form.projects) }}
+        {{ form_widget(form.projects) }}
+    </div>
+</div>
+
+<div class="form-row row-eq-spacing-sm">
+    <div class="col">
+        <button class="btn btn-primary btn-lg">{{ button_label|default('Sauvegarder') }}</button>
+    </div>
+    <div class="col">
+        {% block col_delete_btn %}{% endblock %}
+    </div>
+</div>
 {{ form_end(form) }}

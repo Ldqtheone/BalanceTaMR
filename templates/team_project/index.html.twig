@@ -1,32 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}TeamProject index{% endblock %}
+{% block title %}#BalanceTaMR - Projets{% endblock %}
 
 {% block body %}
-    <h1>TeamProject index</h1>
+    <div class="container-sm">
 
-    <table class="table">
-        <thead>
+        <h1>Liste des projets</h1>
+
+        <table class="table table-striped">
+            <thead>
             <tr>
                 <th>Project Id</th>
                 <th>Project Name</th>
                 <th>Lien Gitlab</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for team_project in team_projects %}
-            <tr>
-                <td>{{ team_project.projectId }}</td>
-                <td>{{ team_project.projectName }}</td>
-                <td><a href="{{ team_project.projectUrl }}">Voir</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+            {% for team_project in team_projects %}
+                <tr>
+                    <td>{{ team_project.projectId }}</td>
+                    <td class="font-weight-bold">{{ team_project.projectName }}</td>
+                    <td><a href="{{ team_project.projectUrl }}" class="text-muted">Voir sur GitLab <i class="fab fa-gitlab" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
