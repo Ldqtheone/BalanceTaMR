@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Team;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
+use App\Service\ControllerService;
 use App\Service\MergeRequestService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,14 +22,20 @@ class TeamController extends AbstractController
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $em;
+    /**
+     * @var ControllerService
+     */
+    private ControllerService $controllerService;
 
     /**
      * TeamController constructor.
      * @param EntityManagerInterface $em
+     * @param ControllerService $controllerService
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, ControllerService $controllerService)
     {
         $this->em = $em;
+        $this->controllerService = $controllerService;
     }
 
     /**
@@ -51,13 +58,11 @@ class TeamController extends AbstractController
     public function new(Request $request): Response
     {
         $team = new Team();
+
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($team);
-            $this->em->flush();
-
+        if($this->controllerService->checkFormValidity($form, $team)){
             return $this->redirectToRoute('team_index');
         }
 
@@ -85,15 +90,16 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="team_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Team $team
+     * @return Response
      */
     public function edit(Request $request, Team $team): Response
     {
         $form = $this->createForm(TeamType::class, $team);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->flush();
-
+        if($this->controllerService->checkFormValidity($form, $team)){
             return $this->redirectToRoute('team_index');
         }
 
@@ -105,6 +111,9 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/{id}", name="team_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Team $team
+     * @return Response
      */
     public function delete(Request $request, Team $team): Response
     {

@@ -17,7 +17,6 @@ class MergeRequestController extends AbstractController
     public function index(Request $request)
     {
         $infos = $request->query->all();
-
         $mrInfo = array();
 
         foreach ($infos['slug'] as $info => $val){

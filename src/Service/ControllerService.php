@@ -4,7 +4,6 @@
 namespace App\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class ControllerService
 {
@@ -18,38 +17,19 @@ class ControllerService
     }
 
     /**
-     * @param $controller
-     * @param $type
-     * @param Request $request
-     */
-    public function createForm($controller, $type, Request $request){
-        $form = $controller->createForm($type);
-        $form->handleRequest($request);
-    }
-
-    /**
      * @param $form
-     * @param $team
+     * @param $entity
      * @return bool
      */
-    public function checkFormValidity($form, $team){
+    public function checkFormValidity($form, $entity){
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($team);
+            $this->em->persist($entity);
             $this->em->flush();
 
             return true;
         }
-        return false;
-    }
 
-    /**
-     * @param $controller
-     * @param $route
-     * @param $params
-     * @return mixed
-     */
-    public function render($controller, $route, $params){
-        return $controller->render($route, $params);
+        return false;
     }
 
 }
