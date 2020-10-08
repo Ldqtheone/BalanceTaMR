@@ -12,8 +12,8 @@
     <div class="container-sm">
         <h1>Dashboard</h1>
         <div class="d-flex flex-row flex-wrap justify-content-center">
-
-            {% for project in projects %}{% for merge in project %}
+            {% for project in projects %}
+                {% for merge in project %}
 
                 <div class="w-500">
                     <div class="card p-0">
@@ -37,7 +37,9 @@
                                     </div>
                                     <div class="col">
                                         <div class="badge-group" role="group">
-                                            <span class="badge  badge-primary badge-pill">{{ merge.state }}</span>
+                                            <span class="badge  badge-primary badge-pill">
+                                                {{ merge.web_url|split('/',6)[4] }}
+                                            </span>
                                         </div>
 
                                         <span class="badge-group" role="group">
