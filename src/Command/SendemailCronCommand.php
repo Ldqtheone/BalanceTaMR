@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\MergeRequestService;
 use App\Service\SendEmailService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,6 +14,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class SendemailCronCommand extends Command
 {
     protected static $defaultName = 'sendemail:cron';
+    /**
+     * @var MergeRequestService
+     */
+    private MergeRequestService $mergeRequestService;
+
+    public function __construct(MergeRequestService $mergeRequestService)
+    {
+        parent::__construct();
+        $this->mergeRequestService = $mergeRequestService;
+    }
 
     protected function configure()
     {
@@ -31,6 +42,8 @@ class SendemailCronCommand extends Command
         if ($arg1) {
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }
+
+        $mrList = $this->mergeRequestService->getMr();
 
         SendEmailService::sendEmail($mrList);
 
