@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\SendEmailService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +17,7 @@ class SendemailCronCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
+            ->setDescription('Send an email to the user about all MRs')
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
             ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
         ;
@@ -31,13 +32,9 @@ class SendemailCronCommand extends Command
             $io->note(sprintf('You passed an argument: %s', $arg1));
         }
 
-        if ($input->getOption('option1')) {
-            // ...
-        }
+        SendEmailService::sendEmail($mrList);
 
-        service->envoiEmail();
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+        $io->success('Email successfully send !');
 
         return Command::SUCCESS;
     }
