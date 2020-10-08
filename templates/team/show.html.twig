@@ -12,6 +12,10 @@
 {% block body %}
     <div class="container-sm">
         <h1>Dashboard</h1>
+        {% for project in projects %}
+            {% for merge in project %}
+                <span>{{ merge.title }}</span>
+            {% endfor %}
+        {% endfor %}
     </div>
-
 {% endblock %}

@@ -7,6 +7,7 @@ use App\Entity\TeamProject;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
 use App\Service\GitlabApiService;
+use App\Service\MergeRequestService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,38 +70,16 @@ class TeamController extends AbstractController
     /**
      * @Route("/{id}", name="team_show", methods={"GET"})
      * @param Team $team
-     * @param GitlabApiService $gitlabApiService
+     * @param MergeRequestService $mergeRequestService
      * @return Response
      */
-    public function show(Team $team, GitlabApiService $gitlabApiService): Response
+    public function show(Team $team, MergeRequestService $mergeRequestService): Response
     {
-        /*$showMerge = $gitlabApiService->getMergeByProject();
-
-        foreach ($showMerge as $merge){
-
-            $id = (int)$project['id'];
-            $name = $project['name'];
-
-            $projectList = new TeamProject();
-            $projectList->setProjectId($id);
-            $projectList->setProjectName($name);
-
-            $searchedId = $this->teamProjectRepository->findOneBy(['project_id' => $id]);
-
-            if($searchedId){
-                if($searchedId->getProjectId() != $id){
-                    $this->em->persist($projectList);
-                    $this->em->flush();
-                }
-            }
-            else{
-                $this->em->persist($projectList);
-                $this->em->flush();
-            }
-        }*/
+        $projects = $mergeRequestService->getAllMr($team);
 
         return $this->render('team/show.html.twig', [
-            'team' => $team,
+            'projects' => $projects,
+            'team' => $team
         ]);
     }
 
