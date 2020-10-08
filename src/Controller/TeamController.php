@@ -3,10 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Team;
-use App\Entity\TeamProject;
 use App\Form\TeamType;
 use App\Repository\TeamRepository;
-use App\Service\GitlabApiService;
 use App\Service\MergeRequestService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -47,6 +45,8 @@ class TeamController extends AbstractController
 
     /**
      * @Route("/new", name="team_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -92,7 +92,7 @@ class TeamController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('team_index');
         }
@@ -109,9 +109,8 @@ class TeamController extends AbstractController
     public function delete(Request $request, Team $team): Response
     {
         if ($this->isCsrfTokenValid('delete'.$team->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($team);
-            $entityManager->flush();
+            $this->em->remove($team);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('team_index');
