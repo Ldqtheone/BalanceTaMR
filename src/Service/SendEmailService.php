@@ -10,7 +10,7 @@ class SendEmailService
 {
     public static function sendEmail($mrList) : void
     {
-        $content = "Voici les Merge Requetes du moment :";
+        $content = "<h1>#BalanceTaMR</h1><br><h2>Bonjour !\nVoici les merge requests restantes à ce jour :</h2>";
 
         foreach ($mrList as $list){
             foreach ($list as $merge){
@@ -25,7 +25,7 @@ class SendEmailService
          */
         $transport = (new Swift_SmtpTransport('smtp.gmail.com', 587, 'tls'))
             ->setUsername('maxence.lavenu@edu.itescia.fr')
-            ->setPassword('&&');
+            ->setPassword('**********');
 
         $mailer = new Swift_Mailer($transport);
 
@@ -33,7 +33,7 @@ class SendEmailService
         $message = (new Swift_Message('Bilan journalier - #BalanceTaMR'))
             ->setFrom(['maxence.lavenu@edu.itescia.fr' => '#BalanceTaMR'])
             ->setTo(['lecarp@hotmail.fr', 'maxence.lavenu@edu.itescia.fr' => 'L\'équipe'])
-            ->setBody($content)
+            ->setBody($content, 'text/html')
         ;
 
         $mailer->send($message);
