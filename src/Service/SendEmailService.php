@@ -8,15 +8,41 @@ use Swift_SmtpTransport;
 
 class SendEmailService
 {
-    public static function sendEmail($mrList) : void
+    public static function sendEmail($mrList): void
     {
         $content = "<h1>#BalanceTaMR</h1><br><h2>Bonjour !\nVoici les merge requests restantes à ce jour :</h2>";
+        $content .= "<table>
+                      <thead>
+                        <tr>
+                          <th>Nom</th>
+                          <th>Créateur</th>
+                          <th>Date</th>
+                          <th>Upvotes</th>
+                          <th>Downvotes</th>
+                          <th>Commentaires</th>
+                          <th>Lien GitLab</th>
+                        </tr>
+                       </thead>
+                       <tbody>";
 
-        foreach ($mrList as $list){
-            foreach ($list as $merge){
-                $content .= " // Titre = " . $merge['title'];
+
+        foreach ($mrList as $list) {
+            foreach ($list as $merge) {
+                $content .= "
+                <tr>
+                   <td>".$merge['title']."</td>
+                   <td>".$merge['author']['name']."</td>
+                   <td>".$merge['created_at']."</td>
+                   <td>".$merge['upvotes']."</td>
+                   <td>".$merge['downvotes']."</td>
+                   <td>".$merge['user_notes_count']."</td>
+                   <td>".$merge['web_url']."</td>
+                 </tr>
+                ";
             }
         }
+
+        $content .= "</tbody></table>";
 
         /** @var
          * Username : Ton adresse email
@@ -33,8 +59,7 @@ class SendEmailService
         $message = (new Swift_Message('Bilan journalier - #BalanceTaMR'))
             ->setFrom(['maxence.lavenu@edu.itescia.fr' => '#BalanceTaMR'])
             ->setTo(['lecarp@hotmail.fr', 'maxence.lavenu@edu.itescia.fr' => 'L\'équipe'])
-            ->setBody($content, 'text/html')
-        ;
+            ->setBody($content, 'text/html');
 
         $mailer->send($message);
     }
