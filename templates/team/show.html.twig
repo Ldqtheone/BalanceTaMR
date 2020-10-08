@@ -79,7 +79,7 @@
                             {% endif %}
                             <div class="text-center mt-20">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button class="btn btn-sm">Détails</button>
+                                    <a href="{{ path('merge_request', {'slug' : merge|merge({'element': 'value'})}) }}" class="btn btn-sm">Détails</a>
                                     <a href="{{ merge.web_url }}"  target="_blank" class="btn btn-sm btn-secondary" role="button">Voir sur GitLab</a>
                                 </div>
 
