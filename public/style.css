@@ -1,5 +1,5 @@
 .profile-picture-huge {
-    width: 10em;
-    height: 10em;
+    width: 7.5em !important;
+    height: 7.5em !important;
     object-fit: cover;
 }
