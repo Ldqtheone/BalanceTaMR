@@ -21,7 +21,7 @@
                         </a>
                     </div>
                     <div class="text-center">
-                        <img src="{{ team.pictureUrl }}" class="img-fluid rounded-circle profile-picture-huge"/>
+                        <img src="{{ team.pictureUrl }}" class="img-fluid rounded-circle profile-picture-huge shadow-lg"/>
                         <h2 class="card-title">{{ team.name }}</h2>
                         <a href="{{ path('team_show', {'id': team.id}) }}" class="btn btn-lg" type="button">Choisir</a>
                     </div>
@@ -32,7 +32,7 @@
         <div class="w-200 mw-full"> <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
 
                 <div class="text-center" data-toggle="tooltip" data-title="Créer une équipe">
-                    <a href="{{ path('team_new') }}"><img src="/img/blank_team.svg" class="img-fluid rounded-circle"/></a>
+                    <a href="{{ path('team_new') }}"><img src="/img/blank_team.svg" class="img-fluid rounded-circle shadow-lg"/></a>
                 </div>
         </div>
 
