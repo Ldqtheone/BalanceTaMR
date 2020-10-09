@@ -5,9 +5,7 @@ namespace App\Command;
 use App\Service\MergeRequestService;
 use App\Service\SendEmailService;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -27,27 +25,18 @@ class SendemailCronCommand extends Command
 
     protected function configure()
     {
-        $this
-            ->setDescription('Send an email to the user about all MRs')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
-        ;
+        $this->setDescription('Send an email to the users about all MRs');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
-
-        if ($arg1) {
-            $io->note(sprintf('You passed an argument: %s', $arg1));
-        }
 
         $mrList = $this->mergeRequestService->getMr();
 
         SendEmailService::sendEmail($mrList);
 
-        $io->success('Email successfully send !');
+        $io->success('Notification email successfully sent!');
 
         return Command::SUCCESS;
     }

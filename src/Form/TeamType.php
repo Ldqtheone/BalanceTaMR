@@ -12,6 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TeamType extends AbstractType
 {
+    /*
+     * Build the form for Team creation
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
